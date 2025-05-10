@@ -4,16 +4,14 @@ Parking Lot Stack
 Defines the AWS CDK stack for the serverless parking lot management system.
 """
 
-from aws_cdk import (
-    Stack,
-    aws_dynamodb as dynamodb,
-    aws_lambda as lambda_,
-    aws_apigatewayv2 as apigw,
-    RemovalPolicy,
-)
+import os
+
+from aws_cdk import RemovalPolicy, Stack
+from aws_cdk import aws_apigatewayv2 as apigw
+from aws_cdk import aws_dynamodb as dynamodb
+from aws_cdk import aws_lambda as lambda_
 from aws_cdk.aws_apigatewayv2_integrations import HttpLambdaIntegration
 from constructs import Construct
-import os
 
 
 class ParkingLotStack(Stack):
