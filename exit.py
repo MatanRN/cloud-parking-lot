@@ -1,3 +1,29 @@
+"""
+Exit Lambda Function
+
+This function handles parking lot exit events.
+
+Request Format:
+GET /exit?ticketId=123e4567-e89b-12d3-a456-426614174000
+
+Response Schema:
+{
+    "ticketId": "123e4567-e89b-12d3-a456-426614174000",
+    "plate": "ABC123",
+    "parkingLotId": "lot-001",
+    "entryTs": 1620000000,
+    "exitTs": 1620010000,
+    "durationMin": 167,
+    "chargeUsd": 70.0,
+    "status": "CLOSED"
+}
+
+Errors:
+- 400: Invalid input (missing ticketId)
+- 404: Ticket not found or already closed
+- 500: Server error
+"""
+
 import json
 import math
 import time
@@ -12,6 +38,11 @@ ticket_table = dynamodb.Table("TICKET_TABLE")
 
 
 def handler(event: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Handle parking lot exit event.
+
+    Updates the ticket in DynamoDB with exit information and calculates the fee.
+    """
     try:
         # Parse query parameters
         query_parameters = event.get("queryStringParameters", {})
