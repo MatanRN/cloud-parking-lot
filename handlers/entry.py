@@ -21,6 +21,7 @@ Errors:
 """
 
 import json
+import os
 import time
 import uuid
 from typing import Any, Dict
@@ -29,10 +30,10 @@ import boto3
 
 # Initialize AWS resources
 dynamodb = boto3.resource("dynamodb")
-ticket_table = dynamodb.Table("TICKET_TABLE")
+ticket_table = dynamodb.Table(os.environ.get("TICKET_TABLE"))
 
 
-def handler(event: Dict[str, Any]) -> Dict[str, Any]:
+def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """
     Handle parking lot entry event.
 
@@ -85,9 +86,8 @@ def handler(event: Dict[str, Any]) -> Dict[str, Any]:
         }
 
     except Exception as e:
-        print(f"Error processing entry request: {str(e)}")
         return {
             "statusCode": 500,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"error": "Internal server error"}),
+            "body": json.dumps({"error": f"Internal server error. Details: {str(e)}"}),
         }

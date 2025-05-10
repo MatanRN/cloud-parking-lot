@@ -24,6 +24,7 @@ Errors:
 - 500: Server error
 """
 
+import os
 import json
 import math
 import time
@@ -34,10 +35,10 @@ import boto3
 
 # Initialize AWS resources
 dynamodb = boto3.resource("dynamodb")
-ticket_table = dynamodb.Table("TICKET_TABLE")
+ticket_table = dynamodb.Table(os.environ.get("TICKET_TABLE"))
 
 
-def handler(event: Dict[str, Any]) -> Dict[str, Any]:
+def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """
     Handle parking lot exit event.
 
