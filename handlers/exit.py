@@ -109,6 +109,13 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         )
 
         result = updated_ticket["Attributes"]
+        # Convert Decimal types to int or float for JSON serialization
+        for key, value in result.items():
+            if isinstance(value, Decimal):
+                if value % 1 == 0:
+                    result[key] = int(value)
+                else:
+                    result[key] = float(value)
 
         # Return success response
         return {
