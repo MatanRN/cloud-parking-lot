@@ -1,3 +1,25 @@
+"""
+Entry Lambda Function
+
+This function handles parking lot entry events.
+
+Request Format:
+GET /entry?plate=ABC123&parkingLotId=lot-001
+
+Response Schema:
+{
+    "ticketId": "123e4567-e89b-12d3-a456-426614174000",
+    "plate": "ABC123",
+    "parkingLotId": "lot-001",
+    "entryTs": 1620000000,
+    "status": "OPEN"
+}
+
+Errors:
+- 400: Invalid input (missing required fields)
+- 500: Server error
+"""
+
 import json
 import time
 import uuid
@@ -11,6 +33,11 @@ ticket_table = dynamodb.Table("TICKET_TABLE")
 
 
 def handler(event: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Handle parking lot entry event.
+
+    Creates a new ticket entry in DynamoDB and returns the ticket details.
+    """
     try:
         # Parse query parameters
         query_parameters = event.get("queryStringParameters", {})
