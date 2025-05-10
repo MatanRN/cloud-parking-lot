@@ -89,5 +89,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         return {
             "statusCode": 500,
             "headers": {"Content-Type": "application/json"},
-            "body": json.dumps({"error": f"Internal server error. Details: {str(e)}"}),
+            "body": json.dumps(
+                {"error": "Internal server error", "exception": f"{str(e)}"}
+            ),
         }
